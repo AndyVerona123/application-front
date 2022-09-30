@@ -19,4 +19,9 @@ export class UserService {
   public createUser(user: User): Observable<any> {
     return this.http.post(urlBase.concat('/users'), user, httpOptions);
   }
+
+  public getUser(email: string, password: string): Observable<any> {
+    return this.http.get(urlBase.concat(`/users/login/${email}/${password}`), {responseType: 'json'});
+  }
+
 }

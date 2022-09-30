@@ -13,6 +13,7 @@ export class NavbarComponent implements OnInit {
   public focus;
   public listTitles: any[];
   public location: Location;
+  public username;
 
   constructor(location: Location, private element: ElementRef, private router: Router,
               private localService: LocalService) {
@@ -20,6 +21,7 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.username = this.localService.getValue('user').name;
     this.listTitles = ROUTES.filter(listTitle => listTitle);
   }
 

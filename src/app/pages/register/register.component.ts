@@ -28,27 +28,9 @@ export class RegisterComponent {
     user.name = this.form.controls['name'].value;
     user.email = this.form.controls['email'].value;
     user.password = this.form.controls['password'].value;
-    this.userService.createUser(user).subscribe(data => {
-      console.log(data);
+    this.userService.createUser(user).subscribe(() => {
+      this.route.navigate(['/login']);
     });
   }
 
-  /* public guardarInformacion() {
-     if (this.form.valid) {
-       const usuario = new Usuario();
-       usuario.nombreCompleto = this.form.controls['nombre'].value;
-       usuario.correo = this.form.controls['correo'].value;
-       usuario.contrasena = this.form.controls['contrasena'].value;
-       this.usuarioServiceService.guardarUsuario(usuario).subscribe(data => {
-         this.toastServiceService.addSingle('success', 'Respuesta', data.message);
-         this.route.navigate(['/login']);
-       }, error => {
-         if (error.status === 0) {
-           this.toastServiceService.addSingle('error', 'ERROR:', 'Los servicios no están disponibles');
-         } else {
-           this.toastServiceService.addSingle('error', 'ERROR:', error.error.message);
-         }
-       });
-     }
-   }*/
 }

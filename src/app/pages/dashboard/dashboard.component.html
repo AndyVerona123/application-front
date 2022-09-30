@@ -26,25 +26,27 @@
                style="width: 20%; margin-right: 2rem" placeholder="Ingrese" type="number">
         <button type="button" class="btn btn-primary my-4" (click)="generateRandomLocation()">Generar nuevo destino
         </button>
+        <button type="button" class="btn btn-primary my-4" (click)="generateLocation()">Guardar
+        </button>
       </div>
-      <p-table [value]="customers" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+      <p-table [value]="locations" [paginator]="true" [rows]="rows" [first]="first" [totalRecords]="total" [showCurrentPageReport]="true"
                responsiveLayout="scroll"
                currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
                [rowsPerPageOptions]="[10,25,50]">
         <ng-template pTemplate="header">
           <tr>
-            <th>Name</th>
-            <th>Country</th>
-            <th>Company</th>
-            <th>Representative</th>
+            <th>Tu latitud</th>
+            <th>Tu longitud</th>
+            <th>Latitud</th>
+            <th>Longitud</th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-customer>
+        <ng-template pTemplate="body" let-location>
           <tr>
-            <td>{{customer.name}}</td>
-            <td>{{customer.country.name}}</td>
-            <td>{{customer.company}}</td>
-            <td>{{customer.representative.name}}</td>
+            <td>{{location.currentLatitude}}</td>
+            <td>{{location.currentLength}}</td>
+            <td>{{location.latitude}}</td>
+            <td>{{location.length}}</td>
           </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage" let-columns>

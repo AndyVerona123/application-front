@@ -1,5 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import randomLocation from 'random-location';
+import {Localtion} from '../../model/localtion';
+import {LocationService} from '../../services/location.service';
+import {LocalService} from '../../services/local.service';
 
 // core components
 
@@ -13,55 +16,57 @@ export class DashboardComponent implements OnInit {
   public currentValue: number;
   public thereIsCurrentLocation = false;
   public thereIsAnyLocation = false;
-  customers: any[];
-
-  first = 0;
-
-  rows = 10;
-
-  public datasets: any;
-  public data: any;
-  public salesChart;
-  public clicked: boolean = true;
-  public clicked1: boolean = false;
-  public latitude1 = 6.2518400;
-  public latitude2 = 4.666;
-  public longitude1 = -75.5635900;
-  public longitude2 = -74.084;
+  public locations: Localtion[];
+  public first = 0;
+  public rows = 10;
   public lat;
   public lng;
-
   public origin: any;
   public destination: any;
-  public acepto = false;
+  public total: number;
+  public idUser: number;
+
+  constructor(private locationService: LocationService, private localService: LocalService) {
+  }
 
 
   ngOnInit() {
-/*    this.datasets = [
-      [0, 20, 10, 30, 15, 40, 20, 60, 60],
-      [0, 20, 5, 25, 10, 30, 15, 40, 40]
-    ];
-    this.data = this.datasets[0];
+    this.idUser = this.localService.getValue('user').id;
+    this.getLocationForUser();
+  }
 
+  public getLocationForUser() {
+    this.locationService.getLocationForUser(this.idUser).subscribe(data => {
+      if (data && data.body) {
 
-    var chartOrders = document.getElementById('chart-orders');
-
-    parseOptions(Chart, chartOptions());
-
-
-    var ordersChart = new Chart(chartOrders, {
-      type: 'bar',
-      options: chartExample2.options,
-      data: chartExample2.data
+        this.locations = data.body;
+        this.total = this.locations.length;
+        console.log(this.locations);
+      }
     });
+  }
 
-    var chartSales = document.getElementById('chart-sales');
-
-    this.salesChart = new Chart(chartSales, {
-			type: 'line',
-			options: chartExample1.options,
-			data: chartExample1.data
-		});*/
+  public generateLocation() {
+    if (this.origin && this.destination) {
+      let data;
+      if (this.locations && this.locations.length) {
+        console.log(this.destination.lat.toString);
+        console.log(this.destination.lat.toString);
+        data = this.locations.find(l => l.latitude === this.destination.lat.toString() && l.length === this.destination.lng.toString()
+          && l.currentLatitude === this.origin.lat.toString() && l.currentLength === this.origin.lng.toString());
+      }
+      if (!data) {
+        const location = new Localtion();
+        location.currentLength = this.origin.lng;
+        location.currentLatitude = this.origin.lat;
+        location.latitude = this.destination.lat;
+        location.length = this.destination.lng;
+        location.fkUser = this.localService.getValue('user').id;
+        this.locationService.createLocation(location).subscribe(() => {
+          this.getLocationForUser();
+        });
+      }
+    }
   }
 
   public getCurrentLocation() {
@@ -92,11 +97,6 @@ export class DashboardComponent implements OnInit {
 
   public isNullOrEmpty(value) {
     return value === null || value === undefined || value === '';
-  }
-
-  public updateOptions() {
-    this.salesChart.data.datasets[0].data = this.data;
-    this.salesChart.update();
   }
 
 }
