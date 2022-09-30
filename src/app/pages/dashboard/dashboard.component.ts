@@ -38,7 +38,6 @@ export class DashboardComponent implements OnInit {
   public getLocationForUser() {
     this.locationService.getLocationForUser(this.idUser).subscribe(data => {
       if (data && data.body) {
-
         this.locations = data.body;
         this.total = this.locations.length;
         console.log(this.locations);
@@ -50,8 +49,6 @@ export class DashboardComponent implements OnInit {
     if (this.origin && this.destination) {
       let data;
       if (this.locations && this.locations.length) {
-        console.log(this.destination.lat.toString);
-        console.log(this.destination.lat.toString);
         data = this.locations.find(l => l.latitude === this.destination.lat.toString() && l.length === this.destination.lng.toString()
           && l.currentLatitude === this.origin.lat.toString() && l.currentLength === this.origin.lng.toString());
       }
